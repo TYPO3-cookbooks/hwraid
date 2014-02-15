@@ -17,7 +17,5 @@
 # limitations under the License.
 #
 
-# Add the hwraid repository
-include_recipe "hwraid::default"
-
+include_recipe "hwraid::repository"
 package "arcconf"

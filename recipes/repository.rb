@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: hwraid
-# Recipe:: lsi-megaraid
+# Recipe:: repository
 #
-# Copyright 2012, TYPO3 Association, Steffen Gebert
+# Copyright 2014, TYPO3 Association
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "hwraid::repository"
-package "megacli"
-package "megactl"
+# add the hwraid repo
+apt_repository "hwraid" do
+  uri "http://hwraid.le-vert.net/debian/"
+  components ['main']
+  distribution node['lsb']['codename']
+  keyserver "hkp://keyserver.ubuntu.com"
+  key "23B3D3B4"
+  action :add
+end
