@@ -19,3 +19,4 @@
 
 include_recipe "hwraid::repository"
 package "arcconf"
+package "aacraid-status"
