@@ -22,6 +22,7 @@ controllers = [
   { :recipe => "hp-smartarray", :match => "Hewlett-Packard Company Smart Array Controller" },
   { :recipe => "adaptec-aac-raid", :match => "Adaptec AAC-RAID" },
   { :recipe => "lsi-megaraid", :match => "MegaRAID" },
+  { :recipe => "lsi-megaraid", :match => "MegaSAS" },
 ]
 
 lspci = `lspci`
