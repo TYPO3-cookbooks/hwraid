@@ -25,16 +25,25 @@ controllers = [
   { :recipe => "lsi-megaraid", :match => "MegaSAS" },
 ]
 
-lspci = `lspci`
-found_a_controller = false
+# make sure that pciutils package is available
+package "pciutils"
 
-# check if `lspci` includes any of the controllers specified above
-controllers.each do |controller|
-  if lspci.include?(controller[:match])
-    found_a_controller = true
-    Chef::Log.info "Found RAID controller '#{controller[:match]}'"
-    include_recipe "hwraid::#{controller[:recipe]}"
+ruby_block "detect controllers" do
+  block do
+    # run `lspci`
+    lspci = Mixlib::ShellOut.new("lspci")
+    lspci.run_command
+    found_a_controller = false
+
+    # check if `lspci` includes any of the controllers specified above
+    controllers.each do |controller|
+      if lspci.stdout.include?(controller[:match])
+        found_a_controller = true
+        Chef::Log.info "Found RAID controller '#{controller[:match]}'"
+        run_context.include_recipe "hwraid::#{controller[:recipe]}"
+      end
+    end
+    Chef::Log.warn "Did not find any RAID controller." unless found_a_controller
   end
 end
 
-Chef::Log.warn "Did not find any RAID controller." unless found_a_controller
